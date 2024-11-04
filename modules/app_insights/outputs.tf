@@ -1,7 +1,11 @@
+output "app_insights_id" {
+  description = "The ID of the Application Insights resource"
+  value       = azurerm_application_insights.bestrong_app_insights.id
+}
+
 output "app_insights_instrumentation_key" {
-  value       = azurerm_application_insights.app_insights.instrumentation_key
-  description = "Instrumentation key for Application Insights"
-  sensitive   = true
+  description = "The instrumentation key for Application Insights"
+  value       = azurerm_application_insights.bestrong_app_insights.instrumentation_key
 }
 
 
