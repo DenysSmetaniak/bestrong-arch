@@ -1,28 +1,32 @@
 variable "key_vault_name" {
-  description = "Name of the Key Vault"
+  description = "The name of the Key Vault"
   type        = string
-  default     = "bestrong-kv22"
+  default     = "bestrong-key-vault-bstg"
 }
 
 variable "location" {
-  description = "Location for the resources"
+  description = "The location of the resources"
   type        = string
-  default     = "polandcentral"
 }
 
 variable "resource_group_name" {
-  description = "Resource group name for the resources"
-  type        = string
-  default     = "bestrong-rg"
-}
-
-variable "vnet_integration_subnet_id" {
-  description = "ID of the subnet for VNet integration"
+  description = "The name of the resource group"
   type        = string
 }
 
-variable "app_service_principal_id" {
-  description = "Principal ID for App Service Managed Identity"
+variable "delete_retention" {
+  description = "The number of days to retain soft-deleted resources in the Key Vault"
+  type        = number
+  default     = 10
+}
+
+variable "app_service_identity_principal_id" {
+  description = "The principal ID of the App Service for Key Vault access policy"
+  type        = string
+}
+
+variable "subnet_id" {
+  description = "The ID of the subnet for Key Vault network ACLs"
   type        = string
 }
 

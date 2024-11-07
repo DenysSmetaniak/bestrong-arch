@@ -1,29 +1,56 @@
-variable "storage_account_name" {
-  description = "Name of the Storage Account"
-  type        = string
-  default     = "bestrongstorageacct"
-}
+//////////////////////// Storage Account /////////////////////
 
-variable "fileshare_name" {
-  description = "Name of the File Share"
+variable "bestrong_sa_name" {
+  description = "The name of the Azure Storage Account"
   type        = string
-  default     = "bestrongfileshare"
+  default     = "bestrongsa"
 }
 
 variable "location" {
-  description = "Location for the resources"
+  description = "The location for all resources"
   type        = string
-  default     = "polandcentral"
+  default     = "UK South"
 }
 
 variable "resource_group_name" {
-  description = "Resource group name for the resources"
+  description = "The name of the resource group"
   type        = string
-  default     = "bestrong-rg"
 }
 
-variable "vnet_integration_subnet_id" {
-  description = "ID of the subnet for VNet integration"
+//////////////////////// Storage Share //////////////////////
+
+variable "bestrong_fs_name" {
+  description = "The name of the Azure Storage file share"
+  type        = string
+  default     = "bestrong-fs"
+}
+
+variable "bestrong_storage_fs_size_gb" {
+  description = "The quota size in GB for the Azure Storage file share"
+  type        = number
+}
+
+////////////////////// Private Endpoint /////////////////////
+
+variable "bestrong_pe_name" {
+  description = "The name of the private endpoint for the Storage Account"
+  type        = string
+  default     = "bestrong-pe"
+}
+
+# variable "bestrong_private_es" {
+#   description = "The ID of the subnet for the private endpoint"
+#   type        = string
+# }
+
+variable "bestrong_storage_private_link" {
+  description = "The name of the private link connection for the Storage Account"
+  type        = string
+  default     = "bestrong-storage-private-link"
+}
+
+variable "subnet_id" {
+  description = "The ID of the subnet for the private endpoint in the storage account"
   type        = string
 }
 

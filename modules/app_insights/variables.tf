@@ -1,18 +1,23 @@
 variable "app_insights_name" {
-  description = "Name of the Application Insights instance"
+  description = "The name of the Application Insights resource"
   type        = string
   default     = "bestrong-app-insights"
 }
 
 variable "location" {
-  description = "Location for the resources"
+  description = "The location for Application Insights"
   type        = string
-  default     = "polandcentral"
+  default     = "UK South"
 }
 
 variable "resource_group_name" {
-  description = "Resource group name for the resources"
+  description = "The name of the resource group for Application Insights"
   type        = string
-  default     = "bestrong-rg"
+}
+
+variable "application_type" {
+  description = "The type of Application Insights resource"
+  type        = string
+  default     = "web"
 }
 

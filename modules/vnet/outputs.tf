@@ -1,9 +1,14 @@
 output "vnet_id" {
-  value       = azurerm_virtual_network.vnet.id
-  description = "ID of the Virtual Network"
+  description = "The ID of the Virtual Network"
+  value       = azurerm_virtual_network.bestrong_vnet.id
 }
 
-output "subnet_id" {
-  value       = azurerm_subnet.subnet.id
-  description = "ID of the Subnet within the VNet"
+output "app_subnet_id" {
+  description = "The ID of the app subnet in the Virtual Network"
+  value       = azurerm_subnet.bestrong_subnet.id
+}
+
+output "private_endpoint_subnet_id" {
+  description = "The ID of the private endpoint subnet in the Virtual Network"
+  value       = azurerm_subnet.bestrong_private_es.id
 }
