@@ -1,0 +1,90 @@
+trigger:
+  branches:
+    include:
+      - master
+
+pr:
+  branches:
+    include:
+      - master
+
+variables:
+  - group: bestrong-secrets
+
+jobs:
+- job: CI
+  displayName: 'Terraform CI - Initialization and Validation'
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+    - checkout: self
+
+    - task: Bash@3
+      displayName: 'Set Environment Variables'
+      inputs:
+        targetType: 'inline'
+        script: |
+          export ARM_CLIENT_ID=$(service_principal_id)
+          export ARM_CLIENT_SECRET=$(service_principal_key)
+          export ARM_SUBSCRIPTION_ID=$(subscription_id)
+          export ARM_TENANT_ID=$(tenant_id)
+          export TF_VAR_bestrong_mssql_login=$(bestrong_mssql_login)
+          export TF_VAR_bestrong_mssql_password=$(bestrong_mssql_password)
+
+    - task: Bash@3
+      displayName: 'Terraform Init'
+      inputs:
+        targetType: 'inline'
+        script: |
+          terraform init -backend-config="resource_group_name=$(backend_azure_rm_rg_name)" \
+                         -backend-config="storage_account_name=$(backend_azure_rm_sa_name)" \
+                         -backend-config="container_name=$(backend_azure_rm_container_name)" \
+                         -backend-config="key=$(backend_azure_rm_key).tfstate"
+
+    - task: Bash@3
+      displayName: 'Terraform Validate'
+      inputs:
+        targetType: 'inline'
+        script: |
+          terraform validate
+
+    - task: Bash@3
+      displayName: 'Terraform Plan'
+      inputs:
+        targetType: 'inline'
+        condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+        script: |
+          terraform plan -out=tfplan -input=false \
+                         -var "tenantid=$(tenant_id)" \
+                         -var "bestrong_mssql_login=$(bestrong_mssql_login)" \
+                         -var "bestrong_mssql_password=$(bestrong_mssql_password)"
+
+- job: CD
+  displayName: 'Terraform CD - Apply Changes'
+  dependsOn: CI
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+    - checkout: self
+
+    - task: Bash@3
+      displayName: 'Set Environment Variables for Apply'
+      inputs:
+        targetType: 'inline'
+        script: |
+          export ARM_CLIENT_ID=$(service_principal_id)
+          export ARM_CLIENT_SECRET=$(service_principal_key)
+          export ARM_SUBSCRIPTION_ID=$(subscription_id)
+          export ARM_TENANT_ID=$(tenant_id)
+          export TF_VAR_bestrong_mssql_login=$(bestrong_mssql_login)
+          export TF_VAR_bestrong_mssql_password=$(bestrong_mssql_password)
+
+    - task: Bash@3
+      displayName: 'Terraform Apply'
+      inputs:
+        targetType: 'inline'
+        script: |
+          terraform apply -input=false tfplan
+
+
