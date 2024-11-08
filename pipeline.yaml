@@ -119,6 +119,21 @@ stages:
           ARM_TENANT_ID: $(tenant_id)
 
       - task: Bash@3
+        displayName: 'Terraform Plan for Apply'
+        inputs:
+          targetType: 'inline'
+          script: |
+            terraform plan -out=tfplan -input=false \
+                          -var "tenant_id=$(tenant_id)" \
+                          -var "bestrong_mssql_login=$(bestrong_mssql_login)" \
+                          -var "bestrong_mssql_password=$(bestrong_mssql_password)"
+        env:
+          ARM_CLIENT_ID: $(service_principal_id)
+          ARM_CLIENT_SECRET: $(service_principal_key)
+          ARM_SUBSCRIPTION_ID: $(subscription_id)
+          ARM_TENANT_ID: $(tenant_id)
+
+      - task: Bash@3
         displayName: 'Terraform Apply'
         inputs:
           targetType: 'inline'
