@@ -44,3 +44,11 @@ variable "bestrong_mssql_cpu_pause_delay" {
   description = "The auto-pause delay in minutes for the MSSQL server when no activity is detected"
   type        = number
 }
+
+/////////////////////////////////////////////
+
+variable "tenant_id" {
+  description = "The Tenant ID for Azure authentication."
+  type        = string
+}
+
