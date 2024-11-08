@@ -86,7 +86,8 @@ stages:
   - job: CD
     pool:
       vmImage: 'ubuntu-latest'
-    environment: 'manual-approval'
+    variables:
+    - group: approve
     steps:
       - checkout: self
 
