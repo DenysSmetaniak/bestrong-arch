@@ -77,8 +77,11 @@ stages:
           ARM_SUBSCRIPTION_ID: $(subscription_id)
           ARM_TENANT_ID: $(tenant_id)
         
-      - publish: tfplan
-        artifact: terraform_plan
+      - task: PublishPipelineArtifact@1
+        inputs:
+          targetPath: 'tfplan'
+          artifactName: 'terraform_plan'
+          publishLocation: 'pipeline'
 
 - stage: CD
   displayName: 'Terraform CD - Apply Changes'
@@ -94,6 +97,7 @@ stages:
 
       - download: terraform_plan
         artifact: terraform_plan
+        path: '$(Pipeline.Workspace)'
 
       - task: Bash@3
         displayName: 'Set Environment Variables for Apply'
