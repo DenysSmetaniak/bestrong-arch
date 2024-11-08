@@ -41,10 +41,10 @@ jobs:
                          -backend-config="container_name=$(backend_azure_rm_container_name)" \
                          -backend-config="key=$(backend_azure_rm_key).tfstate"
       env:
-        ARM_CLIENT_ID=$(service_principal_id)
-        ARM_CLIENT_SECRET=$(service_principal_key)
-        ARM_SUBSCRIPTION_ID=$(subscription_id)
-        ARM_TENANT_ID=$(tenant_id)
+        ARM_CLIENT_ID: $(service_principal_id)
+        ARM_CLIENT_SECRET: $(service_principal_key)
+        ARM_SUBSCRIPTION_ID: $(subscription_id)
+        ARM_TENANT_ID: $(tenant_id)
 
     - task: Bash@3
       displayName: 'Terraform Validate'
@@ -64,10 +64,10 @@ jobs:
                          -var "bestrong_mssql_login=$(bestrong_mssql_login)" \
                          -var "bestrong_mssql_password=$(bestrong_mssql_password)"
       env:
-        ARM_CLIENT_ID=$(service_principal_id)
-        ARM_CLIENT_SECRET=$(service_principal_key)
-        ARM_SUBSCRIPTION_ID=$(subscription_id)
-        ARM_TENANT_ID=$(tenant_id)
+        ARM_CLIENT_ID: $(service_principal_id)
+        ARM_CLIENT_SECRET: $(service_principal_key)
+        ARM_SUBSCRIPTION_ID: $(subscription_id)
+        ARM_TENANT_ID: $(tenant_id)
 
 - job: CD
   displayName: 'Terraform CD - Apply Changes'
