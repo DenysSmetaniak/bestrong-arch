@@ -63,6 +63,11 @@ jobs:
                          -var "tenant_id=$(tenant_id)" \
                          -var "bestrong_mssql_login=$(bestrong_mssql_login)" \
                          -var "bestrong_mssql_password=$(bestrong_mssql_password)"
+      condition: |
+        or(
+          eq(variables['Build.Reason'], 'PullRequest'),
+          eq(variables['Build.SourceBranch'], 'refs/heads/master')
+        )
       env:
         ARM_CLIENT_ID: $(service_principal_id)
         ARM_CLIENT_SECRET: $(service_principal_key)
@@ -89,6 +94,11 @@ jobs:
           export ARM_TENANT_ID=$(tenant_id)
           export TF_VAR_bestrong_mssql_login=$(bestrong_mssql_login)
           export TF_VAR_bestrong_mssql_password=$(bestrong_mssql_password)
+
+    - task: ManualValidation@0
+      displayName: 'Manual Approval'
+      inputs: 
+        instructions: 'Approve to proceed with Terraform Apply'
 
     - task: Bash@3
       displayName: 'Terraform Apply'
