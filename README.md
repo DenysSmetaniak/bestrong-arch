@@ -89,3 +89,6 @@ The **CD stage** includes a manual approval step configured in **Azure DevOps En
 
 ![alt text](screen/ci-cd-finished-apply-stage.png)
 
+### Group for secrets
+
+![alt text](screen/ci-cd-secrets.png)
