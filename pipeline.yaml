@@ -76,12 +76,6 @@ stages:
           ARM_CLIENT_SECRET: $(service_principal_key)
           ARM_SUBSCRIPTION_ID: $(subscription_id)
           ARM_TENANT_ID: $(tenant_id)
-        
-      # - task: PublishPipelineArtifact@1
-      #   inputs:
-      #     targetPath: 'tfplan'
-      #     artifactName: 'terraform_plan'
-      #     publishLocation: 'pipeline'
 
 - stage: CD
   displayName: 'Terraform CD - Apply Changes'
@@ -92,11 +86,10 @@ stages:
   - job: CD
     pool:
       vmImage: 'ubuntu-latest'
+    variables:
+    - group: approve
     steps:
       - checkout: self
-
-      # - download: terraform_plan
-      #   artifact: terraform_plan
 
       - task: Bash@3
         displayName: 'Set Environment Variables for Apply'
@@ -111,11 +104,11 @@ stages:
             export TF_VAR_bestrong_mssql_password=$(bestrong_mssql_password)
 
       - task: Bash@3
-        displayName: 'Terraform Init in CD'
-        inputs: 
+        displayName: 'Terraform Init for Apply'
+        inputs:
           targetType: 'inline'
           script: |
-             terraform init -backend-config="resource_group_name=$(backend_azure_rm_rg_name)" \
+            terraform init -backend-config="resource_group_name=$(backend_azure_rm_rg_name)" \
                           -backend-config="storage_account_name=$(backend_azure_rm_sa_name)" \
                           -backend-config="container_name=$(backend_azure_rm_container_name)" \
                           -backend-config="key=$(backend_azure_rm_key).tfstate"
@@ -124,26 +117,6 @@ stages:
           ARM_CLIENT_SECRET: $(service_principal_key)
           ARM_SUBSCRIPTION_ID: $(subscription_id)
           ARM_TENANT_ID: $(tenant_id)
-
-      - task: Bash@3
-        displayName: 'Terraform Plan in CD'
-        inputs:
-          targetType: 'inline'
-          script: |
-            terraform plan -out=tfplan -input=false \
-                          -var "tenant_id=$(tenant_id)" \
-                          -var "bestrong_mssql_login=$(bestrong_mssql_login)" \
-                          -var "bestrong_mssql_password=$(bestrong_mssql_password)"
-        env:
-          ARM_CLIENT_ID: $(service_principal_id)
-          ARM_CLIENT_SECRET: $(service_principal_key)
-          ARM_SUBSCRIPTION_ID: $(subscription_id)
-          ARM_TENANT_ID: $(tenant_id)
-
-      # - task: ManualValidation@0
-      #   displayName: 'Manual Approval'
-      #   inputs: 
-      #     instructions: 'Approve to proceed with Terraform Apply'
 
       - task: Bash@3
         displayName: 'Terraform Apply'
@@ -156,5 +129,6 @@ stages:
           ARM_CLIENT_SECRET: $(service_principal_key)
           ARM_SUBSCRIPTION_ID: $(subscription_id)
           ARM_TENANT_ID: $(tenant_id)
+
 
 
