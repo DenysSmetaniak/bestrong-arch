@@ -77,8 +77,8 @@ stages:
           ARM_SUBSCRIPTION_ID: $(subscription_id)
           ARM_TENANT_ID: $(tenant_id)
         
-        - publish: tfplan
-          artifact: terraform_plan
+      - publish: tfplan
+        artifact: terraform_plan
 
 - stage: CD
   displayName: 'Terraform CD - Apply Changes'
