@@ -89,6 +89,9 @@ stages:
     steps:
       - checkout: self
 
+      - download: terraform_plan
+        artifact: terraform_plan
+
       - task: Bash@3
         displayName: 'Set Environment Variables for Apply'
         inputs:
