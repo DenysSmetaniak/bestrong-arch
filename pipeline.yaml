@@ -101,10 +101,10 @@ stages:
             export TF_VAR_bestrong_mssql_login=$(bestrong_mssql_login)
             export TF_VAR_bestrong_mssql_password=$(bestrong_mssql_password)
 
-      - task: ManualValidation@0
-        displayName: 'Manual Approval'
-        inputs: 
-          instructions: 'Approve to proceed with Terraform Apply'
+      # - task: ManualValidation@0
+      #   displayName: 'Manual Approval'
+      #   inputs: 
+      #     instructions: 'Approve to proceed with Terraform Apply'
 
       - task: Bash@3
         displayName: 'Terraform Apply'
