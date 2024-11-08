@@ -60,7 +60,7 @@ jobs:
         condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
         script: |
           terraform plan -out=tfplan -input=false \
-                         -var "tenantid=$(tenant_id)" \
+                         -var "tenant_id=$(tenant_id)" \
                          -var "bestrong_mssql_login=$(bestrong_mssql_login)" \
                          -var "bestrong_mssql_password=$(bestrong_mssql_password)"
       env:
