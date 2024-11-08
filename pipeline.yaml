@@ -40,6 +40,11 @@ jobs:
                          -backend-config="storage_account_name=$(backend_azure_rm_sa_name)" \
                          -backend-config="container_name=$(backend_azure_rm_container_name)" \
                          -backend-config="key=$(backend_azure_rm_key).tfstate"
+      env:
+        ARM_CLIENT_ID=$(service_principal_id)
+        ARM_CLIENT_SECRET=$(service_principal_key)
+        ARM_SUBSCRIPTION_ID=$(subscription_id)
+        ARM_TENANT_ID=$(tenant_id)
 
     - task: Bash@3
       displayName: 'Terraform Validate'
