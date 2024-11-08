@@ -75,7 +75,7 @@ The **CD stage** includes a manual approval step configured in **Azure DevOps En
 
 ### Azure DevOps Project for CI/CD
 
-![alt text](screen/ci-cd-project.png)
+![alt text](./screen/ci-cd-project.png)
 
 ### Pipeline stage
 
